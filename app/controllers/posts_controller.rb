@@ -1,6 +1,11 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.all.ordered.with_categories
+    if params[:category_handle]
+      @category = Category.find_by_handle!(params[:category_handle])
+      @posts = @category.posts.ordered.with_categories
+    end
+
+    @posts ||= Post.all.ordered.with_categories
   end
 
   def show
